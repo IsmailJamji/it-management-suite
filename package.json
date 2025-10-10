@@ -1,0 +1,176 @@
+{
+  "name": "it-management-suite",
+  "version": "1.0.1",
+  "description": "Comprehensive IT Management Desktop Application with AI Agent",
+  "main": "electron/dist/main.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:3000 && npm run dev:electron\"",
+    "dev:react": "react-scripts start",
+    "dev:electron": "electron .",
+    "dev:background": "electron electron/dist/main-new.js",
+    "build": "npm run build:react && npm run build:electron && npm run copy-electron-files",
+    "build:react": "react-scripts build",
+    "build:electron": "tsc -p electron && copy electron\\database\\schema.sql electron\\dist\\database\\schema.sql",
+    "copy-electron-files": "copy electron\\dist\\main.js build\\electron.js && copy electron\\dist\\preload.js build\\preload.js && copy electron\\dist\\utils.js build\\utils.js && xcopy electron\\dist\\database build\\database\\ /E /I && xcopy electron\\dist\\services build\\services\\ /E /I",
+    "build:installer": "npm run build && electron-builder --win --publish=never",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:portable": "npm run build && electron-builder --win --config.win.target=portable",
+    "dist:nsis": "npm run build && electron-builder --win --config.win.target=nsis",
+    "start": "electron .",
+    "start:background": "electron electron/dist/main-new.js",
+    "postinstall": "electron-builder install-app-deps && electron-rebuild",
+    "pack": "npm run build && electron-builder --dir",
+    "pack:win": "npm run build && electron-builder --win --dir"
+  },
+  "keywords": [
+    "it-management",
+    "electron",
+    "react",
+    "typescript",
+    "desktop",
+    "ai-agent"
+  ],
+  "author": "IT Management Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/node": "^18.15.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^7.6.0",
+    "electron": "^22.0.0",
+    "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.9",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^4.9.5",
+    "wait-on": "^7.0.0"
+  },
+  "dependencies": {
+    "@types/nodemailer": "^7.0.2",
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^8.7.0",
+    "clsx": "^1.2.0",
+    "cors": "^2.8.5",
+    "date-fns": "^2.29.0",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "lucide-react": "^0.263.0",
+    "nodemailer": "^7.0.7",
+    "openai": "^3.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.0",
+    "react-hot-toast": "^2.4.0",
+    "react-i18next": "^16.0.0",
+    "react-router-dom": "^6.8.0",
+    "react-scripts": "5.0.1",
+    "recharts": "^2.5.0",
+    "systeminformation": "^5.21.0",
+    "tailwindcss-animate": "^1.0.7",
+    "web-vitals": "^3.0.0",
+    "xlsx": "^0.18.5",
+    "xlsx-style": "^0.8.13"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "build": {
+    "appId": "com.itmanagement.suite",
+    "productName": "IT Management Suite",
+    "icon": "assets/icon.png",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "build/**/*",
+      "electron/dist/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/test/**",
+      "!node_modules/**/tests/**",
+      "!**/*.map",
+      "!src/**/*",
+      "!electron/**/*.ts",
+      "!electron/**/*.js",
+      "!electron/**/*.map"
+    ],
+    "asarUnpack": [
+      "node_modules/**/sqlite3/**",
+      "node_modules/**/better-sqlite3/**",
+      "node_modules/**/node_sqlite3.node",
+      "node_modules/**/build/Release/*.node",
+      "node_modules/**/prebuilds/**"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/database/schema.sql",
+        "to": "database/schema.sql"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "requestedExecutionLevel": "asInvoker",
+      "publisherName": "IT Management Team",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "IT Management Suite",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "menuCategory": "Office",
+      "displayLanguageSelector": false,
+      "language": "1033"
+    },
+    "portable": {
+      "artifactName": "IT-Management-Suite-Portable.exe"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.business"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Office"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "your-org",
+      "repo": "it-management-suite"
+    }
+  }
+}
