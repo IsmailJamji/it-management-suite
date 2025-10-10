@@ -84,6 +84,8 @@ IT Management Suite is a modern, feature-rich desktop application built with **E
 ## 📱 Screenshots
 
 <img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/33fa7c7d-8c0c-4167-9702-2a8ac7678b66" />
+<img width="1916" height="1018" alt="image" src="https://github.com/user-attachments/assets/02544e71-a81f-4f07-b915-41be939eb65c" />
+
 
 
 ## 🔧 Development
@@ -126,7 +128,7 @@ This project is licensed under a proprietary license. All rights reserved. See t
 
 - **Issues**: [GitHub Issues](https://github.com/IsmailJamji/it-management-suite/issues)
 - **Documentation**: [Full Documentation](docs/)
-- **Email**: support@itmanagement.com
+- **Email**: ismail.jm.Jamji@gmail.com
 
 ## 🎯 Roadmap
 
