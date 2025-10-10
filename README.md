@@ -83,7 +83,8 @@ IT Management Suite is a modern, feature-rich desktop application built with **E
 
 ## 📱 Screenshots
 
-*[Add screenshots of the dashboard, asset management, user interface, and key features]*
+<img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/33fa7c7d-8c0c-4167-9702-2a8ac7678b66" />
+
 
 ## 🔧 Development
 
