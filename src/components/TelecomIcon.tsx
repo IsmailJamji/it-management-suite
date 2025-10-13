@@ -20,7 +20,7 @@ const TelecomIcon: React.FC<TelecomIconProps> = ({ provider, size = 24, classNam
         return (
           <div className="flex items-center justify-center" style={iconStyle}>
             <img 
-              src="/inwi-logo.png" 
+              src="./assets/inwi-logo.png" 
               alt="INWI" 
               style={{ 
                 width: size, 
@@ -48,7 +48,7 @@ const TelecomIcon: React.FC<TelecomIconProps> = ({ provider, size = 24, classNam
         return (
           <div className="flex items-center justify-center" style={iconStyle}>
             <img 
-              src="/orange-logo.png" 
+              src="./assets/orange-logo.png" 
               alt="Orange" 
               style={{ 
                 width: size, 
@@ -75,7 +75,7 @@ const TelecomIcon: React.FC<TelecomIconProps> = ({ provider, size = 24, classNam
         return (
           <div className="flex items-center justify-center" style={iconStyle}>
             <img 
-              src="/iam-logo.png" 
+              src="./assets/iam-logo.png" 
               alt="IAM" 
               style={{ 
                 width: size, 
