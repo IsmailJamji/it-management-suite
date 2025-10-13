@@ -8,21 +8,20 @@ const UpdateNotification: React.FC = () => {
   const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
-    if (window.electronAPI && (window.electronAPI as any).updater) {
-      const updater = (window.electronAPI as any).updater;
+    if ((window.electronAPI as any)?.updater) {
       // Listen for update events
-      updater.onUpdateAvailable(() => {
+      (window.electronAPI as any).updater.onUpdateAvailable(() => {
         setUpdateAvailable(true);
         toast.success('Update available! Downloading...');
       });
 
-      updater.onUpdateDownloaded(() => {
+      (window.electronAPI as any).updater.onUpdateDownloaded(() => {
         setUpdateDownloaded(true);
         setUpdateAvailable(false);
         toast.success('Update downloaded! Restart to install.');
       });
 
-      updater.onUpdateError((error: string) => {
+      (window.electronAPI as any).updater.onUpdateError((error: string) => {
         toast.error(`Update error: ${error}`);
         setIsChecking(false);
       });
@@ -30,27 +29,25 @@ const UpdateNotification: React.FC = () => {
   }, []);
 
   const checkForUpdates = async () => {
-    if (window.electronAPI && (window.electronAPI as any).updater) {
-      const updater = (window.electronAPI as any).updater;
-      setIsChecking(true);
-      try {
-        await updater.checkForUpdates();
-      } catch (error) {
-        toast.error('Failed to check for updates');
-      } finally {
-        setIsChecking(false);
-      }
+    if (!(window.electronAPI as any)?.updater) return;
+    
+    setIsChecking(true);
+    try {
+      await (window.electronAPI as any).updater.checkForUpdates();
+    } catch (error) {
+      toast.error('Failed to check for updates');
+    } finally {
+      setIsChecking(false);
     }
   };
 
   const installUpdate = async () => {
-    if (window.electronAPI && (window.electronAPI as any).updater) {
-      const updater = (window.electronAPI as any).updater;
-      try {
-        await updater.quitAndInstall();
-      } catch (error) {
-        toast.error('Failed to install update');
-      }
+    if (!(window.electronAPI as any)?.updater) return;
+    
+    try {
+      await (window.electronAPI as any).updater.quitAndInstall();
+    } catch (error) {
+      toast.error('Failed to install update');
     }
   };
 

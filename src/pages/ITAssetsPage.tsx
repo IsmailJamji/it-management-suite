@@ -662,7 +662,7 @@ const ITAssetsPage: React.FC = () => {
                 serial_number: formData.get('serial_number') as string,
                 location: formData.get('zone') as string || 'Office',
                 department: formData.get('department') as string || 'IT',
-                assigned_to: formData.get('assigned_to') as string,
+                assigned_to: formData.get('owner_name') as string,
                 purchase_date: formData.get('purchase_date') as string || formData.get('date') as string,
                 warranty_expiry: formData.get('warranty_expiry') as string,
                 status: formData.get('status') as string || 'active',
@@ -1109,7 +1109,7 @@ const ITAssetsPage: React.FC = () => {
                   </span>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Assigned To</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Owner</label>
                   <p className="text-foreground">{(selectedAsset as any).assigned_to || 'N/A'}</p>
                 </div>
               </div>

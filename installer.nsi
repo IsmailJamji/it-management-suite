@@ -15,7 +15,7 @@
 RequestExecutionLevel admin
 InstallDir "$PROGRAMFILES64\${APPNAME}"
 Name "${APPNAME}"
-Icon "assets\icon.ico"
+Icon "assets\icon.png"
 outFile "IT-Management-Suite-Setup.exe"
 
 !include LogicLib.nsh

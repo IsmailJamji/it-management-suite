@@ -156,10 +156,7 @@
       "menuCategory": "Office",
       "displayLanguageSelector": false,
       "language": "1033",
-      "installerIcon": "assets/icon.png",
-      "uninstallerIcon": "assets/icon.png",
-      "installerHeaderIcon": "assets/icon.png",
-      "include": "installer.nsi"
+      "installerLanguages": ["en", "fr"]
     },
     "portable": {
       "artifactName": "IT-Management-Suite-Portable.exe"
