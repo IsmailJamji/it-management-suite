@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, ipcMain, dialog } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import * as path from 'path';
 import { isDev } from './utils';
 import { database } from './database/database';
@@ -922,6 +923,44 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
     } catch (error) {
       console.error('Check connection error:', error);
       throw error;
+    }
+  });
+
+  // Auto-updater setup
+  if (!isDev) {
+    autoUpdater.checkForUpdatesAndNotify();
+    
+    autoUpdater.on('update-available', () => {
+      mainWindow.webContents.send('update-available');
+    });
+
+    autoUpdater.on('update-downloaded', () => {
+      mainWindow.webContents.send('update-downloaded');
+    });
+
+    autoUpdater.on('error', (error) => {
+      console.error('Auto-updater error:', error);
+      mainWindow.webContents.send('update-error', error.message);
+    });
+  }
+
+  // IPC handlers for update actions
+  ipcMain.handle('check-for-updates', async () => {
+    if (!isDev) {
+      try {
+        const result = await autoUpdater.checkForUpdates();
+        return result;
+      } catch (error) {
+        console.error('Check for updates error:', error);
+        throw error;
+      }
+    }
+    return null;
+  });
+
+  ipcMain.handle('quit-and-install', () => {
+    if (!isDev) {
+      autoUpdater.quitAndInstall();
     }
   });
 }

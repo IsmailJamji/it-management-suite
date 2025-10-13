@@ -580,7 +580,7 @@ const ITAssetsPage: React.FC = () => {
               )}
               {asset.assigned_to && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{t('itAssets.assignedTo')}:</span>
+                  <span className="text-muted-foreground">Owner:</span>
                   <span className="text-foreground">{asset.assigned_to}</span>
                 </div>
               )}
@@ -1239,10 +1239,6 @@ const ITAssetsPage: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-1">Warranty Expiry</label>
                   <p className="text-foreground">{selectedAsset.warranty_expiry || 'N/A'}</p>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Ticket Number</label>
-                  <p className="text-foreground">{(selectedAsset as any).ticket_number || 'N/A'}</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-1">Notes</label>

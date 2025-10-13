@@ -115,3 +115,4 @@ const TelecomIcon: React.FC<TelecomIconProps> = ({ provider, size = 24, classNam
 
 export default TelecomIcon;
 
+

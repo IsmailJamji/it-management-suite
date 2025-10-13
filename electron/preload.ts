@@ -156,6 +156,21 @@ contextBridge.exposeInMainWorld('electronAPI', {
     });
   },
 
+  // Auto-updater API
+  updater: {
+    checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+    quitAndInstall: () => ipcRenderer.invoke('quit-and-install'),
+    onUpdateAvailable: (callback: () => void) => {
+      ipcRenderer.on('update-available', callback);
+    },
+    onUpdateDownloaded: (callback: () => void) => {
+      ipcRenderer.on('update-downloaded', callback);
+    },
+    onUpdateError: (callback: (error: string) => void) => {
+      ipcRenderer.on('update-error', (event, error) => callback(error));
+    }
+  },
+
   // Remove all menu listeners
   removeAllListeners: () => {
     const channels = [
@@ -166,7 +181,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'menu-system-info',
       'menu-ai-assistant',
       'menu-device-scan',
-      'navigate-to'
+      'navigate-to',
+      'update-available',
+      'update-downloaded',
+      'update-error'
     ];
     channels.forEach((ch) => ipcRenderer.removeAllListeners(ch));
   }
@@ -266,6 +284,15 @@ declare global {
       navigateTo: (callback: (route: string) => void) => void;
       onMenuEvent: (callback: (event: string) => void) => void;
       removeAllListeners: () => void;
+      
+      // Auto-updater API
+      updater: {
+        checkForUpdates: () => Promise<any>;
+        quitAndInstall: () => Promise<void>;
+        onUpdateAvailable: (callback: () => void) => void;
+        onUpdateDownloaded: (callback: () => void) => void;
+        onUpdateError: (callback: (error: string) => void) => void;
+      };
     };
   }
 }

@@ -18,6 +18,7 @@ import AIPage from './pages/AIPage';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
 import InstallationWizard from './components/InstallationWizard';
+import UpdateNotification from './components/UpdateNotification';
 import { toast } from 'react-hot-toast';
 
 function AppRoutes() {
@@ -191,6 +192,7 @@ function App() {
         <AuthProvider>
           <NotificationProvider>
             <AppRoutes />
+            <UpdateNotification />
           </NotificationProvider>
         </AuthProvider>
       </LanguageProvider>
