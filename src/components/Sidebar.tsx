@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       { name: t('sidebar.telecomAssets'), href: '/telecom-assets', icon: 'telecomAssets', permission: 'view_telecom_assets' },
       { name: t('sidebar.users'), href: '/users', icon: 'users', permission: 'view_users' },
       { name: t('sidebar.ai'), href: '/ai', icon: 'ai', permission: 'view_ai' },
-      { name: 'Settings', href: '/settings', icon: 'settings', permission: 'view_users' }
+      { name: t('sidebar.settings'), href: '/settings', icon: 'settings', permission: 'view_users' }
     ];
 
     // Filter navigation based on user permissions (admin has all)

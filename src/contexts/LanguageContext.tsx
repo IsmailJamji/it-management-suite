@@ -39,6 +39,9 @@ const translations = {
     'common.allYears': 'Toutes les années',
     'common.typeYear': 'Tapez l\'année...',
     'common.or': 'ou',
+    'common.searchPlaceholder': 'Rechercher des équipements, tâches, projets...',
+    'common.administrator': 'Administrateur',
+    'common.user': 'Utilisateur',
     
     // IT Assets
     'itAssets.title': 'Équipements IT',
@@ -193,6 +196,13 @@ const translations = {
     // Login
     'login.title': 'Connexion',
     'login.subtitle': 'Connectez-vous à votre compte',
+    'login.applicationMode': 'Mode d\'application',
+    'login.changeMode': 'Changer de mode',
+    'login.current': 'Actuel',
+    'login.modes.local': 'Local',
+    'login.modes.client': 'Client',
+    'login.modes.server': 'Serveur',
+    'login.modes.cloud': 'Cloud',
     'login.email': 'Adresse e-mail',
     'login.password': 'Mot de passe',
     'login.rememberMe': 'Se souvenir de moi',
@@ -406,6 +416,9 @@ const translations = {
     'common.allYears': 'Todos los años',
     'common.typeYear': 'Escribir año...',
     'common.or': 'o',
+    'common.searchPlaceholder': 'Buscar equipos, tareas, proyectos...',
+    'common.administrator': 'Administrador',
+    'common.user': 'Usuario',
     
     // IT Assets
     'itAssets.title': 'Equipos IT',
@@ -560,6 +573,13 @@ const translations = {
     // Login
     'login.title': 'Iniciar sesión',
     'login.subtitle': 'Inicia sesión en tu cuenta',
+    'login.applicationMode': 'Modo de aplicación',
+    'login.changeMode': 'Cambiar modo',
+    'login.current': 'Actual',
+    'login.modes.local': 'Local',
+    'login.modes.client': 'Cliente',
+    'login.modes.server': 'Servidor',
+    'login.modes.cloud': 'Nube',
     'login.email': 'Dirección de correo',
     'login.password': 'Contraseña',
     'login.rememberMe': 'Recordarme',
@@ -773,6 +793,9 @@ const translations = {
     'common.allYears': 'All Years',
     'common.typeYear': 'Type year...',
     'common.or': 'or',
+    'common.searchPlaceholder': 'Search devices, tasks, projects...',
+    'common.administrator': 'Administrator',
+    'common.user': 'User',
     
     // IT Assets
     'itAssets.title': 'IT Assets',
@@ -927,6 +950,13 @@ const translations = {
     // Login
     'login.title': 'Login',
     'login.subtitle': 'Sign in to your account',
+    'login.applicationMode': 'Application Mode',
+    'login.changeMode': 'Change Mode',
+    'login.current': 'Current',
+    'login.modes.local': 'Local',
+    'login.modes.client': 'Client',
+    'login.modes.server': 'Server',
+    'login.modes.cloud': 'Cloud',
     'login.email': 'Email Address',
     'login.password': 'Password',
     'login.rememberMe': 'Remember me',
@@ -1116,17 +1146,28 @@ const translations = {
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('fr'); // French as default
+  // Get saved language from localStorage or default to French
+  const getInitialLanguage = (): Language => {
+    const saved = localStorage.getItem('app-language');
+    return (saved as Language) || 'fr';
+  };
+
+  const [language, setLanguage] = useState<Language>(getInitialLanguage);
 
   const t = (key: string): string => {
     return (translations[language] as any)[key] || key;
+  };
+
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('app-language', lang);
   };
 
   return (
     <LanguageContext.Provider
       value={{
         language,
-        setLanguage,
+        setLanguage: handleSetLanguage,
         t,
       }}
     >

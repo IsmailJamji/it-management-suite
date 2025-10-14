@@ -192,13 +192,13 @@ const LoginPage: React.FC = () => {
           <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <ModernIcon name="settings" size={16} className="text-muted-foreground" />
-            <span className="text-sm font-medium text-foreground">Application Mode</span>
+            <span className="text-sm font-medium text-foreground">{t('login.applicationMode')}</span>
           </div>
           <button
             onClick={() => setShowModeSwitcher(!showModeSwitcher)}
             className="text-xs text-primary hover:text-primary/80 flex items-center space-x-1"
           >
-            <span>Change Mode</span>
+            <span>{t('login.changeMode')}</span>
             <ModernIcon name="settings" size={12} />
           </button>
           </div>
@@ -209,7 +209,7 @@ const LoginPage: React.FC = () => {
             {currentMode === 'server' && <ModernIcon name="server" size={16} />}
             {currentMode === 'cloud' && <ModernIcon name="wifi" size={16} />}
             <span className="text-sm text-muted-foreground">
-              Current: <span className="font-medium text-foreground capitalize">{currentMode}</span>
+              {t('login.current')}: <span className="font-medium text-foreground capitalize">{t(`login.modes.${currentMode}`)}</span>
             </span>
           </div>
 
