@@ -173,24 +173,45 @@ export class SystemInfoCollector {
       if (process.platform !== 'win32') return [];
 
       const psCommand = `
-        $paths = @(
-          'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*',
-          'HKLM:\\Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*',
-          'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'
-        );
-        $apps = foreach ($p in $paths) {
-          Get-ItemProperty -Path $p -ErrorAction SilentlyContinue |
-            Where-Object { $_.DisplayName -and ($_.SystemComponent -ne 1) -and ($_.ReleaseType -ne 'Update') } |
-            Select-Object @{n='name';e={$_.DisplayName}}, @{n='version';e={$_.DisplayVersion}}, @{n='installDate';e={$_.InstallDate}}
-        } | Sort-Object name -Unique;
-        $apps | ConvertTo-Json -Compress
-      `;
+$paths = @(
+  'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*',
+  'HKLM:\\Software\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*',
+  'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*'
+)
+$apps = foreach ($p in $paths) {
+  Get-ItemProperty -Path $p -ErrorAction SilentlyContinue |
+    Where-Object { $_.DisplayName -and ($_.SystemComponent -ne 1) -and ($_.ReleaseType -ne 'Update') -and ($_.ParentKeyName -ne 'OperatingSystem') } |
+    Select-Object @{n='name';e={$_.DisplayName}}, @{n='version';e={$_.DisplayVersion}}, @{n='installDate';e={ if ($_.InstallDate) { $_.InstallDate } else { '' } }}
+} | Sort-Object name -Unique
 
-      const { stdout } = await execAsync(`powershell -NoProfile -ExecutionPolicy Bypass -Command "${psCommand}"`, { maxBuffer: 10 * 1024 * 1024 });
+# Fallback to Winget if registry empty
+if (-not $apps -or $apps.Count -eq 0) {
+  try {
+    $winget = winget list --accept-source-agreements | Select-Object -Skip 1
+    $parsed = @()
+    foreach ($line in $winget) {
+      $s = $line.ToString().Trim()
+      if ($s) { $parts = -split $s; if ($parts.Length -ge 2) { $name = $parts[0]; $ver = $parts[-1]; $parsed += [PSCustomObject]@{ name=$name; version=$ver; installDate='' } } }
+    }
+    $apps = $parsed
+  } catch {}
+}
+
+$apps | ConvertTo-Json -Compress
+`
+
+      const { stdout } = await execAsync(`powershell -NoProfile -ExecutionPolicy Bypass -Command ${JSON.stringify(psCommand)}`, { maxBuffer: 20 * 1024 * 1024 });
       const parsed = JSON.parse(stdout || '[]');
-      // Normalize and filter to common user apps
-      const interesting = ['Google', 'Chrome', 'Edge', 'Firefox', 'Cursor', 'Visual Studio', 'Node.js', 'Python', '7-Zip', 'WinRAR', 'Microsoft', 'Office', 'Defender', 'Kaspersky', 'McAfee', 'Avast', 'AVG', 'ESET', 'Bitdefender', 'Sophos'];
-      return (Array.isArray(parsed) ? parsed : []).filter(a => typeof a.name === 'string' && a.name.length > 0 && interesting.some(k => a.name.includes(k)));
+      const list = Array.isArray(parsed) ? parsed : [parsed];
+      const sanitized = list
+        .filter(a => a && typeof a.name === 'string' && a.name.trim().length > 0)
+        .map(a => ({
+          name: String(a.name).trim(),
+          version: a.version ? String(a.version).trim() : '',
+          installDate: a.installDate ? String(a.installDate).trim() : ''
+        }))
+        .filter(a => !/^KB\d+/i.test(a.name) && !/C\+\+ Redistributable/i.test(a.name));
+      return sanitized;
     } catch (error) {
       console.error('Error getting installed applications:', error);
       return [];

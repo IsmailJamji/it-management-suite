@@ -70,11 +70,11 @@ export class AIAgent {
 
       const prompt = this.buildSuggestionPrompt(context);
       const response = await this.openai!.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
-            content: 'You are an AI assistant for an IT Management System. Provide helpful suggestions based on the context provided. Return suggestions in JSON format.'
+            content: 'You are an AI assistant for an IT Management System. Provide helpful suggestions based on the context provided. Return suggestions strictly as compact JSON array only.'
           },
           {
             role: 'user',
@@ -82,10 +82,12 @@ export class AIAgent {
           }
         ],
         max_tokens: 1000,
-        temperature: 0.7
+        temperature: 0.4
       });
 
-      const suggestions = JSON.parse(response.choices[0].message.content || '[]');
+      const raw = (response.choices?.[0]?.message?.content ?? '').trim();
+      const jsonString = this.extractJson(raw);
+      const suggestions = JSON.parse(jsonString || '[]');
       
       // Log AI action
       await database.logAIAction({
@@ -109,11 +111,11 @@ export class AIAgent {
 
       const prompt = this.buildSystemAnalysisPrompt(systemData);
       const response = await this.openai!.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
-            content: 'You are an AI system analyst for IT infrastructure. Analyze the provided system data and return a comprehensive analysis in JSON format.'
+            content: 'You are an AI system analyst for IT infrastructure. Analyze the provided system data and return a comprehensive analysis strictly as JSON only.'
           },
           {
             role: 'user',
@@ -121,10 +123,12 @@ export class AIAgent {
           }
         ],
         max_tokens: 1500,
-        temperature: 0.5
+        temperature: 0.3
       });
 
-      const analysis = JSON.parse(response.choices[0].message.content || '{}');
+      const raw = (response.choices?.[0]?.message?.content ?? '').trim();
+      const jsonString = this.extractJson(raw);
+      const analysis = JSON.parse(jsonString || '{}');
       
       // Log AI action
       await database.logAIAction({
@@ -152,11 +156,11 @@ export class AIAgent {
 
       const prompt = this.buildTaskManagementPrompt(tasks);
       const response = await this.openai!.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
-            content: 'You are an AI task management assistant. Analyze tasks and provide prioritization and recommendations in JSON format.'
+            content: 'You are an AI task management assistant. Analyze tasks and provide prioritization and recommendations strictly as JSON only.'
           },
           {
             role: 'user',
@@ -164,10 +168,12 @@ export class AIAgent {
           }
         ],
         max_tokens: 1200,
-        temperature: 0.6
+        temperature: 0.35
       });
 
-      const management = JSON.parse(response.choices[0].message.content || '{}');
+      const raw = (response.choices?.[0]?.message?.content ?? '').trim();
+      const jsonString = this.extractJson(raw);
+      const management = JSON.parse(jsonString || '{}');
       
       // Log AI action
       await database.logAIAction({
@@ -181,6 +187,33 @@ export class AIAgent {
       console.error('Error managing tasks:', error);
       return this.getFallbackTaskManagement(tasks);
     }
+  }
+
+  // Extract first JSON object/array substring to guard against stray text
+  private extractJson(text: string): string {
+    if (!text) return '';
+    const firstBrace = text.indexOf('{');
+    const firstBracket = text.indexOf('[');
+    const start = [firstBrace, firstBracket].filter(i => i >= 0).sort((a,b)=>a-b)[0] ?? -1;
+    if (start < 0) return text;
+    let stack: string[] = [];
+    for (let i = start; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '{' || ch === '[') stack.push(ch);
+      else if (ch === '}' || ch === ']') {
+        const last = stack[stack.length - 1];
+        if ((last === '{' && ch === '}') || (last === '[' && ch === ']')) {
+          stack.pop();
+          if (stack.length === 0) {
+            return text.substring(start, i + 1);
+          }
+        } else {
+          // mismatched, break
+          break;
+        }
+      }
+    }
+    return text.substring(start);
   }
 
   private buildSuggestionPrompt(context: any): string {

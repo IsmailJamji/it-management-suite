@@ -527,6 +527,34 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
     return await aiAgent.manageTasks(tasks);
   });
 
+  // Free-form AI query for chat UI
+  ipcMain.handle('ai-process-query', async (event, query: string) => {
+    try {
+      // If OpenAI not initialized, provide a deterministic local reply
+      if (!aiAgent.isAIAvailable()) {
+        return `AI is offline. Your query: "${query}". Try again after setting OPENAI_API_KEY.`;
+      }
+      // Reuse suggestions endpoint by building minimal context
+      const context = { userRole: 'admin', currentTasks: await database.getAllTasks(), devices: await database.getAllDevices(), projects: await database.getAllProjects(), systemHealth: { score: 85 } } as any;
+      const prompt = `User question: ${query}\nRespond briefly and practically for an IT admin.`;
+      // Call through agent suggestion model to keep one model configuration
+      const openai: any = (aiAgent as any).openai;
+      const resp = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a concise and practical IT admin assistant.' },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: 400,
+        temperature: 0.3
+      });
+      return (resp.choices?.[0]?.message?.content ?? '').trim();
+    } catch (e) {
+      console.error('ai-process-query error:', e);
+      return 'Sorry, I could not process that request.';
+    }
+  });
+
   // Audit logging
   ipcMain.handle('audit-log', async (event, auditData) => {
     return await database.addAuditLog(auditData);
