@@ -99,8 +99,8 @@ const Dashboard: React.FC = () => {
 
   const statCards = [
     {
-      title: 'Total Devices',
-      subtitle: 'All registered devices',
+      title: t('dashboard.totalDevices'),
+      subtitle: t('dashboard.totalDevicesSubtitle'),
       value: stats.totalDevices,
       change: '+12%',
       changeType: 'positive' as const,
@@ -110,8 +110,8 @@ const Dashboard: React.FC = () => {
       borderColor: 'border-blue-200'
     },
     {
-      title: 'Active Devices',
-      subtitle: 'Currently online',
+      title: t('dashboard.activeDevices'),
+      subtitle: t('dashboard.activeDevicesSubtitle'),
       value: stats.activeDevices,
       change: '+5%',
       changeType: 'positive' as const,
@@ -121,8 +121,8 @@ const Dashboard: React.FC = () => {
       borderColor: 'border-green-200'
     },
     {
-      title: 'Total Tasks',
-      subtitle: 'All assigned tasks',
+      title: t('dashboard.totalTasks'),
+      subtitle: t('dashboard.totalTasksSubtitle'),
       value: stats.totalTasks,
       change: '+8%',
       changeType: 'positive' as const,
@@ -132,8 +132,8 @@ const Dashboard: React.FC = () => {
       borderColor: 'border-purple-200'
     },
     {
-      title: 'Completed Tasks',
-      subtitle: 'Successfully finished',
+      title: t('dashboard.completedTasks'),
+      subtitle: t('dashboard.completedTasksSubtitle'),
       value: stats.completedTasks,
       change: '+15%',
       changeType: 'positive' as const,
@@ -143,8 +143,8 @@ const Dashboard: React.FC = () => {
       borderColor: 'border-emerald-200'
     },
     {
-      title: 'Active Projects',
-      subtitle: 'Currently in progress',
+      title: t('dashboard.activeProjects'),
+      subtitle: t('dashboard.activeProjectsSubtitle'),
       value: stats.activeProjects,
       change: '+3%',
       changeType: 'positive' as const,
@@ -154,8 +154,8 @@ const Dashboard: React.FC = () => {
       borderColor: 'border-orange-200'
     },
     ...(isAdmin() ? [{
-      title: 'Total Users',
-      subtitle: 'Registered users',
+      title: t('dashboard.totalUsers'),
+      subtitle: t('dashboard.totalUsersSubtitle'),
       value: stats.totalUsers,
       change: '+2%',
       changeType: 'positive' as const,
@@ -177,9 +177,9 @@ const Dashboard: React.FC = () => {
   ];
 
   const deviceStatusData = [
-    { name: 'Active', value: stats.activeDevices, color: '#10B981' },
-    { name: 'Inactive', value: stats.totalDevices - stats.activeDevices, color: '#EF4444' },
-    { name: 'Maintenance', value: 2, color: '#F59E0B' },
+    { name: t('dashboard.deviceStatus.active'), value: stats.activeDevices, color: '#10B981' },
+    { name: t('dashboard.deviceStatus.inactive'), value: stats.totalDevices - stats.activeDevices, color: '#EF4444' },
+    { name: t('dashboard.deviceStatus.maintenance'), value: 2, color: '#F59E0B' },
   ];
 
   if (loading) {
@@ -279,9 +279,9 @@ const Dashboard: React.FC = () => {
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                   }}
                 />
-                <Line type="monotone" dataKey="cpu" stroke="#3B82F6" strokeWidth={3} name="CPU %" dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }} />
-                <Line type="monotone" dataKey="memory" stroke="#10B981" strokeWidth={3} name="Memory %" dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }} />
-                <Line type="monotone" dataKey="disk" stroke="#F59E0B" strokeWidth={3} name="Disk %" dot={{ fill: '#F59E0B', strokeWidth: 2, r: 4 }} />
+                <Line type="monotone" dataKey="cpu" stroke="#3B82F6" strokeWidth={3} name={t('dashboard.charts.cpu')} dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }} />
+                <Line type="monotone" dataKey="memory" stroke="#10B981" strokeWidth={3} name={t('dashboard.charts.memory')} dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }} />
+                <Line type="monotone" dataKey="disk" stroke="#F59E0B" strokeWidth={3} name={t('dashboard.charts.disk')} dot={{ fill: '#F59E0B', strokeWidth: 2, r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
