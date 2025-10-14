@@ -728,37 +728,37 @@ const TelecomAssetsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Company</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('telecomAssets.company')}</label>
                   <input name="company" defaultValue={(selectedAsset as any)?.company || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., ACME Corp" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Poste/Activité</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('telecomAssets.position')}</label>
                   <input name="poste_activite" defaultValue={(selectedAsset as any)?.poste_activite || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., Field Sales" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Remarque</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('fields.notes')}</label>
                   <textarea name="remarque" rows={4} defaultValue={(selectedAsset as any)?.remarque || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Notes..." />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Phone Name</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('telecomAssets.phoneName')}</label>
                   <input name="phone_name" defaultValue={(selectedAsset as any)?.phone_name || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., iPhone 13" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">RAM (GB)</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('fields.ram')}</label>
                   <input type="number" min={0} name="ram_gb" defaultValue={(selectedAsset as any)?.ram_gb || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., 8" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">IMEI</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('fields.imei')}</label>
                   <input name="imei" maxLength={15} defaultValue={(selectedAsset as any)?.imei || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., 123456789012345" />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Storage (GB)</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('fields.storage')}</label>
                   <input type="number" min={0} name="storage_gb" defaultValue={(selectedAsset as any)?.storage_gb || ''} className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g., 128" />
                 </div>
                 

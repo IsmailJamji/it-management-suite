@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Shield, User, Mail, Building, X, Save } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface User {
   id: number;
@@ -16,6 +17,7 @@ interface User {
 
 const UsersPage: React.FC = () => {
   const { hasPermission } = useAuth();
+  const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -342,7 +344,7 @@ const UsersPage: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground">Add New User</h2>
+              <h2 className="text-lg font-semibold text-foreground">{t('users.addUser')}</h2>
               <button onClick={() => setShowAddModal(false)} className="text-muted-foreground hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
@@ -350,7 +352,7 @@ const UsersPage: React.FC = () => {
             <form onSubmit={handleSaveUser} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">First Name</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('users.firstName')}</label>
                   <input
                     type="text"
                     required
@@ -360,7 +362,7 @@ const UsersPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Last Name</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('users.lastName')}</label>
                   <input
                     type="text"
                     required
@@ -458,7 +460,7 @@ const UsersPage: React.FC = () => {
             <form onSubmit={handleSaveUser} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">First Name</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('users.firstName')}</label>
                   <input
                     type="text"
                     required
@@ -468,7 +470,7 @@ const UsersPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-foreground">Last Name</label>
+                  <label className="block text-sm font-medium mb-1 text-foreground">{t('users.lastName')}</label>
                   <input
                     type="text"
                     required

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { X, FileSpreadsheet, Upload, CheckCircle, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 import ModernButton from './ModernButton';
 
 interface ExcelImportModalProps {
@@ -33,6 +34,7 @@ const ExcelImportModal: React.FC<ExcelImportModalProps> = ({
   onImportComplete,
   assetType
 }) => {
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [previewData, setPreviewData] = useState<ImportResult | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -189,12 +191,12 @@ const ExcelImportModal: React.FC<ExcelImportModalProps> = ({
 
               {/* Instructions */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-medium text-blue-900 mb-2">Import Instructions</h3>
+                <h3 className="font-medium text-blue-900 mb-2">{t('import.instructions')}</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Ensure your Excel file has headers in the first row</li>
-                  <li>• Column names will be automatically mapped to database fields</li>
-                  <li>• Supported languages: English, French, Arabic</li>
-                  <li>• Preview your data before importing</li>
+                  <li>• {t('import.instruction1')}</li>
+                  <li>• {t('import.instruction2')}</li>
+                  <li>• {t('import.instruction3')}</li>
+                  <li>• {t('import.instruction4')}</li>
                 </ul>
               </div>
 
@@ -207,7 +209,7 @@ const ExcelImportModal: React.FC<ExcelImportModalProps> = ({
                     variant="primary"
                     icon={<Eye className="w-4 h-4" />}
                   >
-                    {isLoading ? 'Previewing...' : 'Preview Import'}
+                    {isLoading ? t('import.previewing') : t('import.previewImport')}
                   </ModernButton>
                 </div>
               )}

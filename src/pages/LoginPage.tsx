@@ -310,7 +310,7 @@ const LoginPage: React.FC = () => {
                   {/* Server Discovery */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-xs font-medium text-foreground">Available Servers</label>
+                      <label className="block text-xs font-medium text-foreground">{t('login.availableServers')}</label>
                       <button
                         onClick={discoverServers}
                         disabled={isDiscovering}
@@ -362,7 +362,7 @@ const LoginPage: React.FC = () => {
                   {/* Manual Server Entry */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-foreground mb-1">Server Name</label>
+                      <label className="block text-xs font-medium text-foreground mb-1">{t('login.serverName')}</label>
                       <input
                         type="text"
                         value={serverInfo.name}
@@ -372,7 +372,7 @@ const LoginPage: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-foreground mb-1">Server IP</label>
+                      <label className="block text-xs font-medium text-foreground mb-1">{t('login.serverIP')}</label>
                       <input
                         type="text"
                         value={serverInfo.ip}
@@ -510,13 +510,13 @@ const LoginPage: React.FC = () => {
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="First name"
+                      placeholder={t('users.firstName')}
                       disabled={isLoading}
                     />
                   </div>
                   <div>
                     <label htmlFor="lastName" className="block text-sm font-medium text-foreground mb-2">
-                      Last Name
+                      {t('users.lastName')}
                     </label>
                     <input
                       id="lastName"
@@ -525,7 +525,7 @@ const LoginPage: React.FC = () => {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                      placeholder="Last name"
+                      placeholder={t('users.lastName')}
                       disabled={isLoading}
                     />
                   </div>
@@ -533,7 +533,7 @@ const LoginPage: React.FC = () => {
 
                 <div>
                   <label htmlFor="username" className="block text-sm font-medium text-foreground mb-2">
-                    Username
+                    {t('users.username')}
                   </label>
                   <input
                     id="username"
@@ -542,14 +542,14 @@ const LoginPage: React.FC = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                    placeholder="Enter your username"
+                    placeholder={t('users.username')}
                     disabled={isLoading}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                    Email
+                    {t('login.email')}
                   </label>
                   <input
                     id="email"
@@ -558,14 +558,14 @@ const LoginPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                    placeholder="Enter your email"
+                    placeholder={t('login.email')}
                     disabled={isLoading}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="department" className="block text-sm font-medium text-foreground mb-2">
-                    Department
+                    {t('fields.department')}
                   </label>
                   <input
                     id="department"
@@ -574,7 +574,7 @@ const LoginPage: React.FC = () => {
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                    placeholder="Enter your department"
+                    placeholder={t('fields.department')}
                     disabled={isLoading}
                   />
                 </div>
@@ -584,7 +584,7 @@ const LoginPage: React.FC = () => {
             {!isRegisterMode && (
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                  Email
+                  {t('login.email')}
                 </label>
                 <input
                   id="email"
@@ -593,7 +593,7 @@ const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  placeholder="Enter your email"
+                  placeholder={t('login.email')}
                   disabled={isLoading}
                 />
               </div>
@@ -601,7 +601,7 @@ const LoginPage: React.FC = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
-                Password
+                {t('login.password')}
               </label>
               <div className="relative">
                 <input
@@ -611,7 +611,7 @@ const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 pr-10 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  placeholder="Enter your password"
+                  placeholder={t('login.password')}
                   disabled={isLoading}
                 />
                 <button
@@ -632,7 +632,7 @@ const LoginPage: React.FC = () => {
             {isRegisterMode && (
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2">
-                  Confirm Password
+                  {t('login.confirmPassword')}
                 </label>
                 <input
                   id="confirmPassword"
@@ -641,7 +641,7 @@ const LoginPage: React.FC = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                  placeholder="Confirm your password"
+                  placeholder={t('login.confirmPassword')}
                   disabled={isLoading}
                 />
               </div>

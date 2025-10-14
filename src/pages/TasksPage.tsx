@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CheckSquare, Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Clock, CheckCircle, AlertCircle, Download } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Task {
   id: number;
@@ -22,6 +23,7 @@ interface Task {
 
 const TasksPage: React.FC = () => {
   const { user, isAdmin, hasPermission } = useAuth();
+  const { t } = useLanguage();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -293,7 +295,7 @@ const TasksPage: React.FC = () => {
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg border p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-            <h2 className="text-xl font-semibold mb-4">Add New Task</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('tasks.addTask')}</h2>
             <form onSubmit={(e) => {
               e.preventDefault();
               const formData = new FormData(e.target as HTMLFormElement);
