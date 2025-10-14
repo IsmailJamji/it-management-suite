@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FolderOpen, Plus, Search, Filter, MoreVertical, Edit, Trash2, Eye, Clock, CheckCircle, AlertCircle, Users, Download } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Project {
   id: number;
@@ -17,6 +18,7 @@ interface Project {
 
 const ProjectsPage: React.FC = () => {
   const { user, isAdmin, hasPermission } = useAuth();
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -419,7 +421,7 @@ const ProjectsPage: React.FC = () => {
             }}>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Name *</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.name')} *</label>
                   <input
                     name="name"
                     type="text"
@@ -430,7 +432,7 @@ const ProjectsPage: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.description')}</label>
                   <textarea
                     name="description"
                     defaultValue={selectedProject?.description || ''}
@@ -441,7 +443,7 @@ const ProjectsPage: React.FC = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Status</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.status')}</label>
                     <select
                       name="status"
                       defaultValue={selectedProject?.status || 'planning'}
@@ -456,7 +458,7 @@ const ProjectsPage: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium mb-1">Priority</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.priority')}</label>
                     <select
                       name="priority"
                       defaultValue={selectedProject?.priority || 'medium'}
@@ -472,7 +474,7 @@ const ProjectsPage: React.FC = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Start Date</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.startDate')}</label>
                     <input
                       name="startDate"
                       type="date"
@@ -482,7 +484,7 @@ const ProjectsPage: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium mb-1">End Date</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.endDate')}</label>
                     <input
                       name="endDate"
                       type="date"
@@ -493,7 +495,7 @@ const ProjectsPage: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Budget</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.budget')}</label>
                   <input
                     name="budget"
                     type="number"
@@ -554,20 +556,20 @@ const ProjectsPage: React.FC = () => {
                     <p className="text-sm text-foreground">{selectedProject.name}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Status</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.status')}</label>
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedProject.status)}`}>
                       {getStatusIcon(selectedProject.status)}
                       <span className="ml-1 capitalize">{selectedProject.status.replace('_', ' ')}</span>
                     </span>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Priority</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.priority')}</label>
                     <span className={`px-2 py-1 rounded text-xs font-medium ${getPriorityColor(selectedProject.priority)}`}>
                       {selectedProject.priority}
                     </span>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">Manager</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.manager')}</label>
                     <p className="text-sm text-foreground">{selectedProject.manager_name || 'Unassigned'}</p>
                   </div>
                 </div>
@@ -582,20 +584,20 @@ const ProjectsPage: React.FC = () => {
                 <h3 className="text-lg font-semibold mb-4">Project Timeline</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Start Date</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.startDate')}</label>
                     <p className="text-sm text-foreground">
                       {selectedProject.start_date ? new Date(selectedProject.start_date).toLocaleDateString() : 'Not set'}
                     </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1">End Date</label>
+                    <label className="block text-sm font-medium mb-1">{t('fields.endDate')}</label>
                     <p className="text-sm text-foreground">
                       {selectedProject.end_date ? new Date(selectedProject.end_date).toLocaleDateString() : 'Not set'}
                     </p>
                   </div>
                   {selectedProject.budget && (
                     <div>
-                      <label className="block text-sm font-medium mb-1">Budget</label>
+                      <label className="block text-sm font-medium mb-1">{t('fields.budget')}</label>
                       <p className="text-sm text-foreground">${selectedProject.budget.toLocaleString()}</p>
                     </div>
                   )}
@@ -636,7 +638,7 @@ const ProjectsPage: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Export Format</label>
+                <label className="block text-sm font-medium mb-2">{t('export.format')}</label>
                 <select id="exportFormat" className="w-full px-3 py-2 border border-input rounded-md">
                   <option value="xlsx">Excel (.xlsx) - Modern Format</option>
                   <option value="csv">CSV (.csv) - Simple Format</option>
@@ -644,7 +646,7 @@ const ProjectsPage: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2">Theme Style</label>
+                <label className="block text-sm font-medium mb-2">{t('export.theme')}</label>
                 <select id="exportTheme" className="w-full px-3 py-2 border border-input rounded-md">
                   <option value="modern">Modern - Colorful & Professional</option>
                   <option value="corporate">Corporate - Clean & Business</option>

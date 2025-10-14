@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import ModernButton from '../components/ModernButton';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface Device {
   id: number;
@@ -43,6 +44,7 @@ interface Device {
 
 const DevicesPage: React.FC = () => {
   const { hasPermission } = useAuth();
+  const { t } = useLanguage();
   const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -429,77 +431,77 @@ const DevicesPage: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4">Device Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Device Name</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.deviceName')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.name}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Type</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.type')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.device_type_name}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.status')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.status}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Assigned User</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.assignedUser')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.assigned_user_name || 'Unassigned'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Location</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.location')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.location}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">OS</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.operatingSystem')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.os_name} {selectedDevice.os_version}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Processor</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.processor')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.processor || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">RAM</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.ram')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.ram_gb} GB</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Storage</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.storage')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.disk_used_gb || 0} / {selectedDevice.disk_space_gb} GB</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">IP Address</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.ipAddress')}</label>
                 <p className="text-sm text-foreground font-mono">{selectedDevice.ip_address || 'N/A'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">MAC Address</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.macAddress')}</label>
                 <p className="text-sm text-foreground font-mono">{selectedDevice.mac_address || 'N/A'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Hostname</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.hostname')}</label>
                 <p className="text-sm text-foreground font-mono">{selectedDevice.hostname || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Manufacturer</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.manufacturer')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.manufacturer || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Model</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.model')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.model || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Serial Number</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.serialNumber')}</label>
                 <p className="text-sm text-foreground font-mono">{selectedDevice.serial_number || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Last Seen</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.lastSeen')}</label>
                 <p className="text-sm text-foreground">
                   {selectedDevice.last_seen ? new Date(selectedDevice.last_seen).toLocaleDateString() : 'Never'}
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Antivirus Status</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.antivirusStatus')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.antivirus_status || 'Unknown'}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Update Status</label>
+                <label className="block text-sm font-medium mb-1">{t('fields.updateStatus')}</label>
                 <p className="text-sm text-foreground">{selectedDevice.update_status || 'Unknown'}</p>
               </div>
             </div>
@@ -526,7 +528,7 @@ const DevicesPage: React.FC = () => {
             <form onSubmit={handleUpdateDevice}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Device Name</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.deviceName')}</label>
                   <input 
                     type="text" 
                     name="name"
@@ -536,7 +538,7 @@ const DevicesPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Status</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.status')}</label>
                   <select name="status" defaultValue={selectedDevice.status} className="w-full px-3 py-2 border border-input rounded-md" required>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -545,7 +547,7 @@ const DevicesPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Assigned User</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.assignedUser')}</label>
                   <select name="assigned_user" defaultValue={selectedDevice.assigned_user_name || ''} className="w-full px-3 py-2 border border-input rounded-md">
                     <option value="">Unassigned</option>
                     {users.map(user => (
@@ -554,7 +556,7 @@ const DevicesPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Location</label>
+                  <label className="block text-sm font-medium mb-1">{t('fields.location')}</label>
                   <input 
                     type="text" 
                     name="location"

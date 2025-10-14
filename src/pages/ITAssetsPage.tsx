@@ -704,7 +704,7 @@ const ITAssetsPage: React.FC = () => {
                 <h3 className="text-lg font-semibold text-foreground mb-4">Basic Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Device Type *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.deviceType')} *</label>
                   <select
                     name="device_type"
                       value={selectedDeviceType || selectedAsset?.device_type || ''}
@@ -719,7 +719,7 @@ const ITAssetsPage: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Device Hostname *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.hostname')} *</label>
                   <input
                     type="text"
                       name="hostname"
@@ -730,7 +730,7 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Owner *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">{t('fields.owner')} *</label>
                   <input
                     type="text"
                     name="owner_name"
@@ -741,7 +741,7 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Serial Number *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.serialNumber')} *</label>
                   <input
                     type="text"
                     name="serial_number"
@@ -752,7 +752,7 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Brand *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.brand')} *</label>
                   <input
                     type="text"
                       name="brand"
@@ -763,40 +763,40 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Model *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.model')} *</label>
                   <input
                     type="text"
                       name="model"
                       defaultValue={selectedAsset?.model || ''}
                       required
-                      placeholder="e.g., ThinkPad X1, MacBook Pro"
+                      placeholder={t('fields.modelPlaceholder')}
                     className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Zone/Emplacement *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">{t('fields.zone')} *</label>
                   <input
                     type="text"
                     name="zone"
                     defaultValue={(selectedAsset as any)?.zone || ''}
                     required
-                    placeholder="e.g., Zone A / Floor 2"
+                    placeholder={t('fields.zonePlaceholder')}
                     className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Department *</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">{t('fields.department')} *</label>
                   <input
                     type="text"
                     name="department"
                     defaultValue={selectedAsset?.department || ''}
                     required
-                    placeholder="e.g., IT"
+                    placeholder={t('fields.departmentPlaceholder')}
                     className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Date *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.date')} *</label>
                   <input
                       type="date"
                       name="date"
@@ -806,7 +806,7 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Purchase Date</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.purchaseDate')}</label>
                   <input
                       type="date"
                       name="purchase_date"
@@ -817,7 +817,7 @@ const ITAssetsPage: React.FC = () => {
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-1">
                       <Calendar className="w-4 h-4 inline mr-1" />
-                      Warranty Expiration
+                      {t('fields.warrantyExpiry')}
                     </label>
                   <input
                       type="date"
@@ -827,7 +827,7 @@ const ITAssetsPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-foreground mb-1">Status *</label>
+                    <label className="block text-sm font-medium text-foreground mb-1">{t('fields.status')} *</label>
                     <select
                       name="status"
                       defaultValue={selectedAsset?.status || 'active'}
@@ -841,12 +841,12 @@ const ITAssetsPage: React.FC = () => {
                     </select>
                   </div>
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Company</label>
+                  <label className="block text-sm font-medium text-foreground mb-1">{t('fields.company')}</label>
                   <input
                     type="text"
                     name="company"
                     defaultValue={(selectedAsset as any)?.company || ''}
-                    placeholder="e.g., ACME Corp"
+                    placeholder={t('fields.companyPlaceholder')}
                     className="w-full px-3 py-2 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
