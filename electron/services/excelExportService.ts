@@ -2,6 +2,274 @@ import * as XLSX from 'xlsx';
 import * as ExcelJS from 'exceljs';
 import { database } from '../database/database';
 
+// Translation mappings for Excel exports
+const excelTranslations = {
+  fr: {
+    // IT Assets
+    'itAssets.title': 'Rapport de Gestion des Équipements IT',
+    'itAssets.subtitle': 'Généré le {date} - Total des équipements: {count}',
+    'itAssets.id': 'ID',
+    'itAssets.deviceType': 'Type d\'équipement',
+    'itAssets.ownerName': 'Propriétaire',
+    'itAssets.department': 'Département',
+    'itAssets.zone': 'Zone/Emplacement',
+    'itAssets.serialNumber': 'Numéro de série',
+    'itAssets.model': 'Modèle',
+    'itAssets.brand': 'Marque',
+    'itAssets.date': 'Date d\'équipement',
+    'itAssets.ram': 'RAM (GB)',
+    'itAssets.disk': 'Stockage (GB)',
+    'itAssets.processor': 'Processeur',
+    'itAssets.os': 'Système d\'exploitation',
+    'itAssets.peripheralType': 'Type de périphérique',
+    'itAssets.connectionType': 'Type de connexion',
+    'itAssets.status': 'Statut',
+    'itAssets.remarque': 'Remarque',
+    'itAssets.posteActivite': 'Poste/Activité',
+    'itAssets.company': 'Entreprise',
+    'itAssets.createdAt': 'Créé le',
+    
+    // Telecom Assets
+    'telecomAssets.title': 'Rapport de Gestion des Équipements Télécom',
+    'telecomAssets.subtitle': 'Généré le {date} - Total des équipements: {count}',
+    'telecomAssets.id': 'ID',
+    'telecomAssets.provider': 'Fournisseur',
+    'telecomAssets.simNumber': 'Numéro SIM',
+    'telecomAssets.simOwner': 'Propriétaire SIM',
+    'telecomAssets.subscriptionType': 'Type d\'abonnement',
+    'telecomAssets.phoneNumber': 'Numéro de téléphone',
+    'telecomAssets.phoneName': 'Nom du téléphone',
+    'telecomAssets.ram': 'RAM (GB)',
+    'telecomAssets.storage': 'Stockage (GB)',
+    'telecomAssets.imei': 'IMEI',
+    'telecomAssets.dataPlan': 'Forfait données',
+    'telecomAssets.pinCode': 'Code PIN',
+    'telecomAssets.pukCode': 'Code PUK',
+    'telecomAssets.zone': 'Zone/Emplacement',
+    'telecomAssets.department': 'Département',
+    'telecomAssets.company': 'Entreprise',
+    'telecomAssets.posteActivite': 'Poste/Activité',
+    'telecomAssets.remarque': 'Remarque',
+    'telecomAssets.status': 'Statut',
+    'telecomAssets.date': 'Date d\'ajout',
+    'telecomAssets.createdAt': 'Créé le',
+    
+    // Tasks
+    'tasks.title': 'Rapport de Gestion des Tâches',
+    'tasks.subtitle': 'Généré le {date} - Total des tâches: {count}',
+    'tasks.id': 'ID',
+    'tasks.taskTitle': 'Titre de la tâche',
+    'tasks.description': 'Description',
+    'tasks.status': 'Statut',
+    'tasks.priority': 'Priorité',
+    'tasks.projectName': 'Projet',
+    'tasks.assignedUserName': 'Assigné à',
+    'tasks.createdByName': 'Créé par',
+    'tasks.progressPercentage': 'Progression %',
+    'tasks.dueDate': 'Date d\'échéance',
+    'tasks.createdAt': 'Créé le',
+    
+    // Projects
+    'projects.title': 'Rapport de Gestion des Projets',
+    'projects.subtitle': 'Généré le {date} - Total des projets: {count}',
+    'projects.id': 'ID',
+    'projects.name': 'Nom du projet',
+    'projects.description': 'Description',
+    'projects.status': 'Statut',
+    'projects.priority': 'Priorité',
+    'projects.managerName': 'Gestionnaire',
+    'projects.budget': 'Budget',
+    'projects.startDate': 'Date de début',
+    'projects.endDate': 'Date de fin',
+    'projects.createdAt': 'Créé le',
+    
+    // Common
+    'common.generatedOn': 'Généré le',
+    'common.totalRecords': 'Total des enregistrements',
+    'common.columnStatistics': 'Statistiques des colonnes',
+    'common.sum': 'Somme',
+    'common.average': 'Moyenne',
+    'common.minimum': 'Minimum',
+    'common.maximum': 'Maximum'
+  },
+  es: {
+    // IT Assets
+    'itAssets.title': 'Reporte de Gestión de Equipos IT',
+    'itAssets.subtitle': 'Generado el {date} - Total de equipos: {count}',
+    'itAssets.id': 'ID',
+    'itAssets.deviceType': 'Tipo de equipo',
+    'itAssets.ownerName': 'Propietario',
+    'itAssets.department': 'Departamento',
+    'itAssets.zone': 'Zona/Ubicación',
+    'itAssets.serialNumber': 'Número de serie',
+    'itAssets.model': 'Modelo',
+    'itAssets.brand': 'Marca',
+    'itAssets.date': 'Fecha de equipo',
+    'itAssets.ram': 'RAM (GB)',
+    'itAssets.disk': 'Almacenamiento (GB)',
+    'itAssets.processor': 'Procesador',
+    'itAssets.os': 'Sistema operativo',
+    'itAssets.peripheralType': 'Tipo de periférico',
+    'itAssets.connectionType': 'Tipo de conexión',
+    'itAssets.status': 'Estado',
+    'itAssets.remarque': 'Observación',
+    'itAssets.posteActivite': 'Puesto/Actividad',
+    'itAssets.company': 'Empresa',
+    'itAssets.createdAt': 'Creado el',
+    
+    // Telecom Assets
+    'telecomAssets.title': 'Reporte de Gestión de Equipos Telecom',
+    'telecomAssets.subtitle': 'Generado el {date} - Total de equipos: {count}',
+    'telecomAssets.id': 'ID',
+    'telecomAssets.provider': 'Proveedor',
+    'telecomAssets.simNumber': 'Número SIM',
+    'telecomAssets.simOwner': 'Propietario SIM',
+    'telecomAssets.subscriptionType': 'Tipo de suscripción',
+    'telecomAssets.phoneNumber': 'Número de teléfono',
+    'telecomAssets.phoneName': 'Nombre del teléfono',
+    'telecomAssets.ram': 'RAM (GB)',
+    'telecomAssets.storage': 'Almacenamiento (GB)',
+    'telecomAssets.imei': 'IMEI',
+    'telecomAssets.dataPlan': 'Plan de datos',
+    'telecomAssets.pinCode': 'Código PIN',
+    'telecomAssets.pukCode': 'Código PUK',
+    'telecomAssets.zone': 'Zona/Ubicación',
+    'telecomAssets.department': 'Departamento',
+    'telecomAssets.company': 'Empresa',
+    'telecomAssets.posteActivite': 'Puesto/Actividad',
+    'telecomAssets.remarque': 'Observación',
+    'telecomAssets.status': 'Estado',
+    'telecomAssets.date': 'Fecha de adición',
+    'telecomAssets.createdAt': 'Creado el',
+    
+    // Tasks
+    'tasks.title': 'Reporte de Gestión de Tareas',
+    'tasks.subtitle': 'Generado el {date} - Total de tareas: {count}',
+    'tasks.id': 'ID',
+    'tasks.taskTitle': 'Título de la tarea',
+    'tasks.description': 'Descripción',
+    'tasks.status': 'Estado',
+    'tasks.priority': 'Prioridad',
+    'tasks.projectName': 'Proyecto',
+    'tasks.assignedUserName': 'Asignado a',
+    'tasks.createdByName': 'Creado por',
+    'tasks.progressPercentage': 'Progreso %',
+    'tasks.dueDate': 'Fecha de vencimiento',
+    'tasks.createdAt': 'Creado el',
+    
+    // Projects
+    'projects.title': 'Reporte de Gestión de Proyectos',
+    'projects.subtitle': 'Generado el {date} - Total de proyectos: {count}',
+    'projects.id': 'ID',
+    'projects.name': 'Nombre del proyecto',
+    'projects.description': 'Descripción',
+    'projects.status': 'Estado',
+    'projects.priority': 'Prioridad',
+    'projects.managerName': 'Gerente',
+    'projects.budget': 'Presupuesto',
+    'projects.startDate': 'Fecha de inicio',
+    'projects.endDate': 'Fecha de fin',
+    'projects.createdAt': 'Creado el',
+    
+    // Common
+    'common.generatedOn': 'Generado el',
+    'common.totalRecords': 'Total de registros',
+    'common.columnStatistics': 'Estadísticas de columnas',
+    'common.sum': 'Suma',
+    'common.average': 'Promedio',
+    'common.minimum': 'Mínimo',
+    'common.maximum': 'Máximo'
+  },
+  en: {
+    // IT Assets
+    'itAssets.title': 'IT Assets Management Report',
+    'itAssets.subtitle': 'Generated on {date} - Total Assets: {count}',
+    'itAssets.id': 'ID',
+    'itAssets.deviceType': 'Device Type',
+    'itAssets.ownerName': 'Owner',
+    'itAssets.department': 'Department',
+    'itAssets.zone': 'Zone/Location',
+    'itAssets.serialNumber': 'Serial Number',
+    'itAssets.model': 'Model',
+    'itAssets.brand': 'Brand',
+    'itAssets.date': 'Asset Date',
+    'itAssets.ram': 'RAM (GB)',
+    'itAssets.disk': 'Storage (GB)',
+    'itAssets.processor': 'Processor',
+    'itAssets.os': 'Operating System',
+    'itAssets.peripheralType': 'Peripheral Type',
+    'itAssets.connectionType': 'Connection Type',
+    'itAssets.status': 'Status',
+    'itAssets.remarque': 'Notes',
+    'itAssets.posteActivite': 'Position/Activity',
+    'itAssets.company': 'Company',
+    'itAssets.createdAt': 'Created At',
+    
+    // Telecom Assets
+    'telecomAssets.title': 'Telecom Assets Management Report',
+    'telecomAssets.subtitle': 'Generated on {date} - Total Assets: {count}',
+    'telecomAssets.id': 'ID',
+    'telecomAssets.provider': 'Provider',
+    'telecomAssets.simNumber': 'SIM Number',
+    'telecomAssets.simOwner': 'SIM Owner',
+    'telecomAssets.subscriptionType': 'Subscription Type',
+    'telecomAssets.phoneNumber': 'Phone Number',
+    'telecomAssets.phoneName': 'Phone Name',
+    'telecomAssets.ram': 'RAM (GB)',
+    'telecomAssets.storage': 'Storage (GB)',
+    'telecomAssets.imei': 'IMEI',
+    'telecomAssets.dataPlan': 'Data Plan',
+    'telecomAssets.pinCode': 'PIN Code',
+    'telecomAssets.pukCode': 'PUK Code',
+    'telecomAssets.zone': 'Zone/Location',
+    'telecomAssets.department': 'Department',
+    'telecomAssets.company': 'Company',
+    'telecomAssets.posteActivite': 'Position/Activity',
+    'telecomAssets.remarque': 'Notes',
+    'telecomAssets.status': 'Status',
+    'telecomAssets.date': 'Date Added',
+    'telecomAssets.createdAt': 'Created At',
+    
+    // Tasks
+    'tasks.title': 'Task Management Report',
+    'tasks.subtitle': 'Generated on {date} - Total Tasks: {count}',
+    'tasks.id': 'ID',
+    'tasks.taskTitle': 'Task Title',
+    'tasks.description': 'Description',
+    'tasks.status': 'Status',
+    'tasks.priority': 'Priority',
+    'tasks.projectName': 'Project',
+    'tasks.assignedUserName': 'Assigned To',
+    'tasks.createdByName': 'Created By',
+    'tasks.progressPercentage': 'Progress %',
+    'tasks.dueDate': 'Due Date',
+    'tasks.createdAt': 'Created At',
+    
+    // Projects
+    'projects.title': 'Project Management Report',
+    'projects.subtitle': 'Generated on {date} - Total Projects: {count}',
+    'projects.id': 'ID',
+    'projects.name': 'Project Name',
+    'projects.description': 'Description',
+    'projects.status': 'Status',
+    'projects.priority': 'Priority',
+    'projects.managerName': 'Manager',
+    'projects.budget': 'Budget',
+    'projects.startDate': 'Start Date',
+    'projects.endDate': 'End Date',
+    'projects.createdAt': 'Created At',
+    
+    // Common
+    'common.generatedOn': 'Generated on',
+    'common.totalRecords': 'Total Records',
+    'common.columnStatistics': 'Column Statistics',
+    'common.sum': 'Sum',
+    'common.average': 'Average',
+    'common.minimum': 'Minimum',
+    'common.maximum': 'Maximum'
+  }
+};
+
 export interface ExcelExportOptions {
   title: string;
   subtitle?: string;
@@ -61,7 +329,7 @@ export class ExcelExportService {
     return wb;
   }
 
-  private async createStyledWorkbookWithExcelJS(options: ExcelExportOptions): Promise<Buffer> {
+  private async createStyledWorkbookWithExcelJS(options: ExcelExportOptions, language: string = 'fr'): Promise<Buffer> {
     const workbook = new ExcelJS.Workbook();
     const colors = this.getThemeColors(options.theme || 'modern');
 
@@ -194,7 +462,7 @@ export class ExcelExportService {
     // Add summary sheet if requested
     if (options.includeSummary) {
       const summarySheet = workbook.addWorksheet('Summary');
-      this.createSummarySheetWithExcelJS(summarySheet, options, colors);
+      this.createSummarySheetWithExcelJS(summarySheet, options, colors, language);
     }
 
     // Generate buffer
@@ -252,9 +520,11 @@ export class ExcelExportService {
     return themes[theme as keyof typeof themes] || themes.modern;
   }
 
-  private createSummarySheetWithExcelJS(worksheet: ExcelJS.Worksheet, options: ExcelExportOptions, colors: any) {
+  private createSummarySheetWithExcelJS(worksheet: ExcelJS.Worksheet, options: ExcelExportOptions, colors: any, language: string = 'fr') {
+    const t = excelTranslations[language as keyof typeof excelTranslations] || excelTranslations.fr;
+    
     // Title
-    const titleRow = worksheet.addRow(['Summary Report']);
+    const titleRow = worksheet.addRow([t['common.columnStatistics']]);
     titleRow.height = 30;
     titleRow.getCell(1).font = { 
       bold: true, 
@@ -270,12 +540,12 @@ export class ExcelExportService {
     worksheet.mergeCells(1, 1, 1, 4);
 
     // Generated date
-    const dateRow = worksheet.addRow(['Generated on', new Date().toLocaleString()]);
+    const dateRow = worksheet.addRow([t['common.generatedOn'], new Date().toLocaleString()]);
     dateRow.getCell(1).font = { bold: true };
     dateRow.getCell(2).font = { italic: true };
 
     // Total records
-    const recordsRow = worksheet.addRow(['Total Records', options.data.length]);
+    const recordsRow = worksheet.addRow([t['common.totalRecords'], options.data.length]);
     recordsRow.getCell(1).font = { bold: true };
 
     // Empty row
@@ -363,7 +633,7 @@ export class ExcelExportService {
     return ws;
   }
 
-  async exportITAssets(format: string = 'xlsx', theme: string = 'modern'): Promise<Buffer> {
+  async exportITAssets(format: string = 'xlsx', theme: string = 'modern', language: string = 'fr'): Promise<Buffer> {
     try {
       console.log('Starting IT Assets export...');
       console.log('Database instance:', database);
@@ -376,38 +646,41 @@ export class ExcelExportService {
       console.log('IT Assets retrieved:', assets.length, 'assets');
       console.log('Sample asset:', assets[0]);
       
+      const t = excelTranslations[language as keyof typeof excelTranslations] || excelTranslations.fr;
+      const currentDate = new Date().toLocaleDateString();
+      
       const options: ExcelExportOptions = {
-        title: 'IT Assets Management Report',
-        subtitle: `Generated on ${new Date().toLocaleDateString()} - Total Assets: ${assets.length}`,
+        title: t['itAssets.title'],
+        subtitle: t['itAssets.subtitle'].replace('{date}', currentDate).replace('{count}', assets.length.toString()),
         data: assets,
         columns: [
-          { key: 'id', header: 'ID', width: 8, type: 'number' },
-          { key: 'device_type', header: 'Device Type', width: 15, type: 'text' },
-          { key: 'owner_name', header: 'Owner', width: 20, type: 'text' },
-          { key: 'department', header: 'Department', width: 15, type: 'text' },
-          { key: 'zone', header: 'Zone/Emplacement', width: 16, type: 'text' },
-          { key: 'serial_number', header: 'Serial Number', width: 18, type: 'text' },
-          { key: 'model', header: 'Model', width: 20, type: 'text' },
-          { key: 'brand', header: 'Brand', width: 15, type: 'text' },
-          { key: 'date', header: 'Asset Date', width: 15, type: 'date' },
-          { key: 'ram_gb', header: 'RAM (GB)', width: 12, type: 'number' },
-          { key: 'disk_gb', header: 'Storage (GB)', width: 12, type: 'number' },
-          { key: 'processor', header: 'Processor', width: 25, type: 'text' },
-          { key: 'os', header: 'Operating System', width: 20, type: 'text' },
-          { key: 'peripheral_type', header: 'Peripheral Type', width: 18, type: 'text' },
-          { key: 'connection_type', header: 'Connection Type', width: 18, type: 'text' },
-          { key: 'status', header: 'Status', width: 12, type: 'text' },
-          { key: 'remarque', header: 'Remarque', width: 25, type: 'text' },
-          { key: 'poste_activite', header: 'Poste/Activité', width: 18, type: 'text' },
-          { key: 'company', header: 'Company', width: 18, type: 'text' },
-          { key: 'created_at', header: 'Created At', width: 20, type: 'date' }
+          { key: 'id', header: t['itAssets.id'], width: 8, type: 'number' },
+          { key: 'device_type', header: t['itAssets.deviceType'], width: 15, type: 'text' },
+          { key: 'owner_name', header: t['itAssets.ownerName'], width: 20, type: 'text' },
+          { key: 'department', header: t['itAssets.department'], width: 15, type: 'text' },
+          { key: 'zone', header: t['itAssets.zone'], width: 16, type: 'text' },
+          { key: 'serial_number', header: t['itAssets.serialNumber'], width: 18, type: 'text' },
+          { key: 'model', header: t['itAssets.model'], width: 20, type: 'text' },
+          { key: 'brand', header: t['itAssets.brand'], width: 15, type: 'text' },
+          { key: 'date', header: t['itAssets.date'], width: 15, type: 'date' },
+          { key: 'ram_gb', header: t['itAssets.ram'], width: 12, type: 'number' },
+          { key: 'disk_gb', header: t['itAssets.disk'], width: 12, type: 'number' },
+          { key: 'processor', header: t['itAssets.processor'], width: 25, type: 'text' },
+          { key: 'os', header: t['itAssets.os'], width: 20, type: 'text' },
+          { key: 'peripheral_type', header: t['itAssets.peripheralType'], width: 18, type: 'text' },
+          { key: 'connection_type', header: t['itAssets.connectionType'], width: 18, type: 'text' },
+          { key: 'status', header: t['itAssets.status'], width: 12, type: 'text' },
+          { key: 'remarque', header: t['itAssets.remarque'], width: 25, type: 'text' },
+          { key: 'poste_activite', header: t['itAssets.posteActivite'], width: 18, type: 'text' },
+          { key: 'company', header: t['itAssets.company'], width: 18, type: 'text' },
+          { key: 'created_at', header: t['itAssets.createdAt'], width: 20, type: 'date' }
         ],
         theme: theme as any,
         includeSummary: true
       };
 
       console.log('Creating styled workbook with ExcelJS...');
-      const buffer = await this.createStyledWorkbookWithExcelJS(options);
+      const buffer = await this.createStyledWorkbookWithExcelJS(options, language);
       console.log('ExcelJS buffer created, size:', buffer.length);
       return buffer;
     } catch (error) {
@@ -416,7 +689,7 @@ export class ExcelExportService {
     }
   }
 
-  async exportTelecomAssets(format: string = 'xlsx', theme: string = 'modern'): Promise<Buffer> {
+  async exportTelecomAssets(format: string = 'xlsx', theme: string = 'modern', language: string = 'fr'): Promise<Buffer> {
     try {
       console.log('Starting Telecom Assets export...');
       console.log('Database instance:', database);
@@ -429,39 +702,42 @@ export class ExcelExportService {
       console.log('Telecom Assets retrieved:', assets.length, 'assets');
       console.log('Sample asset:', assets[0]);
       
+      const t = excelTranslations[language as keyof typeof excelTranslations] || excelTranslations.fr;
+      const currentDate = new Date().toLocaleDateString();
+      
       const options: ExcelExportOptions = {
-        title: 'Telecom Assets Management Report',
-        subtitle: `Generated on ${new Date().toLocaleDateString()} - Total Assets: ${assets.length}`,
+        title: t['telecomAssets.title'],
+        subtitle: t['telecomAssets.subtitle'].replace('{date}', currentDate).replace('{count}', assets.length.toString()),
         data: assets,
-      columns: [
-        { key: 'id', header: 'ID', width: 8, type: 'number' },
-        { key: 'provider', header: 'Provider', width: 15, type: 'text' },
-        { key: 'sim_number', header: 'SIM Number', width: 18, type: 'text' },
-        { key: 'sim_owner', header: 'SIM Owner', width: 20, type: 'text' },
-        { key: 'subscription_type', header: 'Subscription Type', width: 20, type: 'text' },
-        { key: 'phone_number', header: 'Phone Number', width: 15, type: 'text' },
-        { key: 'phone_name', header: 'Phone Name', width: 20, type: 'text' },
-        { key: 'ram_gb', header: 'RAM (GB)', width: 12, type: 'number' },
-        { key: 'storage_gb', header: 'Storage (GB)', width: 12, type: 'number' },
-        { key: 'imei', header: 'IMEI', width: 18, type: 'text' },
-        { key: 'data_plan', header: 'Data Plan', width: 15, type: 'text' },
-        { key: 'pin_code', header: 'PIN Code', width: 12, type: 'text' },
-        { key: 'puk_code', header: 'PUK Code', width: 12, type: 'text' },
-        { key: 'zone', header: 'Zone/Emplacement', width: 16, type: 'text' },
-        { key: 'department', header: 'Department', width: 15, type: 'text' },
-        { key: 'company', header: 'Company', width: 18, type: 'text' },
-        { key: 'poste_activite', header: 'Poste/Activité', width: 18, type: 'text' },
-        { key: 'remarque', header: 'Remarque', width: 25, type: 'text' },
-        { key: 'status', header: 'Status', width: 12, type: 'text' },
-        { key: 'date', header: 'Date Added', width: 15, type: 'date' },
-        { key: 'created_at', header: 'Created At', width: 20, type: 'date' }
-      ],
-      theme: theme as any,
-      includeSummary: true
-    };
+        columns: [
+          { key: 'id', header: t['telecomAssets.id'], width: 8, type: 'number' },
+          { key: 'provider', header: t['telecomAssets.provider'], width: 15, type: 'text' },
+          { key: 'sim_number', header: t['telecomAssets.simNumber'], width: 18, type: 'text' },
+          { key: 'sim_owner', header: t['telecomAssets.simOwner'], width: 20, type: 'text' },
+          { key: 'subscription_type', header: t['telecomAssets.subscriptionType'], width: 20, type: 'text' },
+          { key: 'phone_number', header: t['telecomAssets.phoneNumber'], width: 15, type: 'text' },
+          { key: 'phone_name', header: t['telecomAssets.phoneName'], width: 20, type: 'text' },
+          { key: 'ram_gb', header: t['telecomAssets.ram'], width: 12, type: 'number' },
+          { key: 'storage_gb', header: t['telecomAssets.storage'], width: 12, type: 'number' },
+          { key: 'imei', header: t['telecomAssets.imei'], width: 18, type: 'text' },
+          { key: 'data_plan', header: t['telecomAssets.dataPlan'], width: 15, type: 'text' },
+          { key: 'pin_code', header: t['telecomAssets.pinCode'], width: 12, type: 'text' },
+          { key: 'puk_code', header: t['telecomAssets.pukCode'], width: 12, type: 'text' },
+          { key: 'zone', header: t['telecomAssets.zone'], width: 16, type: 'text' },
+          { key: 'department', header: t['telecomAssets.department'], width: 15, type: 'text' },
+          { key: 'company', header: t['telecomAssets.company'], width: 18, type: 'text' },
+          { key: 'poste_activite', header: t['telecomAssets.posteActivite'], width: 18, type: 'text' },
+          { key: 'remarque', header: t['telecomAssets.remarque'], width: 25, type: 'text' },
+          { key: 'status', header: t['telecomAssets.status'], width: 12, type: 'text' },
+          { key: 'date', header: t['telecomAssets.date'], width: 15, type: 'date' },
+          { key: 'created_at', header: t['telecomAssets.createdAt'], width: 20, type: 'date' }
+        ],
+        theme: theme as any,
+        includeSummary: true
+      };
 
       console.log('Creating styled workbook with ExcelJS...');
-      const buffer = await this.createStyledWorkbookWithExcelJS(options);
+      const buffer = await this.createStyledWorkbookWithExcelJS(options, language);
       console.log('ExcelJS buffer created, size:', buffer.length);
       return buffer;
     } catch (error) {
@@ -470,25 +746,28 @@ export class ExcelExportService {
     }
   }
 
-  async exportTasks(format: string = 'xlsx', theme: string = 'modern'): Promise<Buffer> {
+  async exportTasks(format: string = 'xlsx', theme: string = 'modern', language: string = 'fr'): Promise<Buffer> {
     const tasks = await database.getAllTasks();
     
+    const t = excelTranslations[language as keyof typeof excelTranslations] || excelTranslations.fr;
+    const currentDate = new Date().toLocaleDateString();
+    
     const options: ExcelExportOptions = {
-      title: 'Task Management Report',
-      subtitle: `Generated on ${new Date().toLocaleDateString()} - Total Tasks: ${tasks.length}`,
+      title: t['tasks.title'],
+      subtitle: t['tasks.subtitle'].replace('{date}', currentDate).replace('{count}', tasks.length.toString()),
       data: tasks,
       columns: [
-        { key: 'id', header: 'ID', width: 8, type: 'number' },
-        { key: 'title', header: 'Task Title', width: 30, type: 'text' },
-        { key: 'description', header: 'Description', width: 40, type: 'text' },
-        { key: 'status', header: 'Status', width: 15, type: 'text' },
-        { key: 'priority', header: 'Priority', width: 12, type: 'text' },
-        { key: 'project_name', header: 'Project', width: 20, type: 'text' },
-        { key: 'assigned_user_name', header: 'Assigned To', width: 20, type: 'text' },
-        { key: 'created_by_name', header: 'Created By', width: 20, type: 'text' },
-        { key: 'progress_percentage', header: 'Progress %', width: 12, type: 'percentage' },
-        { key: 'due_date', header: 'Due Date', width: 15, type: 'date' },
-        { key: 'created_at', header: 'Created At', width: 20, type: 'date' }
+        { key: 'id', header: t['tasks.id'], width: 8, type: 'number' },
+        { key: 'title', header: t['tasks.taskTitle'], width: 30, type: 'text' },
+        { key: 'description', header: t['tasks.description'], width: 40, type: 'text' },
+        { key: 'status', header: t['tasks.status'], width: 15, type: 'text' },
+        { key: 'priority', header: t['tasks.priority'], width: 12, type: 'text' },
+        { key: 'project_name', header: t['tasks.projectName'], width: 20, type: 'text' },
+        { key: 'assigned_user_name', header: t['tasks.assignedUserName'], width: 20, type: 'text' },
+        { key: 'created_by_name', header: t['tasks.createdByName'], width: 20, type: 'text' },
+        { key: 'progress_percentage', header: t['tasks.progressPercentage'], width: 12, type: 'percentage' },
+        { key: 'due_date', header: t['tasks.dueDate'], width: 15, type: 'date' },
+        { key: 'created_at', header: t['tasks.createdAt'], width: 20, type: 'date' }
       ],
       theme: theme as any,
       includeSummary: true
@@ -498,24 +777,27 @@ export class ExcelExportService {
     return XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
   }
 
-  async exportProjects(format: string = 'xlsx', theme: string = 'modern'): Promise<Buffer> {
+  async exportProjects(format: string = 'xlsx', theme: string = 'modern', language: string = 'fr'): Promise<Buffer> {
     const projects = await database.getAllProjects();
     
+    const t = excelTranslations[language as keyof typeof excelTranslations] || excelTranslations.fr;
+    const currentDate = new Date().toLocaleDateString();
+    
     const options: ExcelExportOptions = {
-      title: 'Project Management Report',
-      subtitle: `Generated on ${new Date().toLocaleDateString()} - Total Projects: ${projects.length}`,
+      title: t['projects.title'],
+      subtitle: t['projects.subtitle'].replace('{date}', currentDate).replace('{count}', projects.length.toString()),
       data: projects,
       columns: [
-        { key: 'id', header: 'ID', width: 8, type: 'number' },
-        { key: 'name', header: 'Project Name', width: 30, type: 'text' },
-        { key: 'description', header: 'Description', width: 40, type: 'text' },
-        { key: 'status', header: 'Status', width: 15, type: 'text' },
-        { key: 'priority', header: 'Priority', width: 12, type: 'text' },
-        { key: 'manager_name', header: 'Manager', width: 20, type: 'text' },
-        { key: 'budget', header: 'Budget', width: 15, type: 'currency' },
-        { key: 'start_date', header: 'Start Date', width: 15, type: 'date' },
-        { key: 'end_date', header: 'End Date', width: 15, type: 'date' },
-        { key: 'created_at', header: 'Created At', width: 20, type: 'date' }
+        { key: 'id', header: t['projects.id'], width: 8, type: 'number' },
+        { key: 'name', header: t['projects.name'], width: 30, type: 'text' },
+        { key: 'description', header: t['projects.description'], width: 40, type: 'text' },
+        { key: 'status', header: t['projects.status'], width: 15, type: 'text' },
+        { key: 'priority', header: t['projects.priority'], width: 12, type: 'text' },
+        { key: 'manager_name', header: t['projects.managerName'], width: 20, type: 'text' },
+        { key: 'budget', header: t['projects.budget'], width: 15, type: 'currency' },
+        { key: 'start_date', header: t['projects.startDate'], width: 15, type: 'date' },
+        { key: 'end_date', header: t['projects.endDate'], width: 15, type: 'date' },
+        { key: 'created_at', header: t['projects.createdAt'], width: 20, type: 'date' }
       ],
       theme: theme as any,
       includeSummary: true

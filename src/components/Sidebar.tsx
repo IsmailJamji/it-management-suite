@@ -26,7 +26,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
       { name: t('sidebar.itAssets'), href: '/it-assets', icon: 'itAssets', permission: 'view_it_assets' },
       { name: t('sidebar.telecomAssets'), href: '/telecom-assets', icon: 'telecomAssets', permission: 'view_telecom_assets' },
       { name: t('sidebar.users'), href: '/users', icon: 'users', permission: 'view_users' },
-      { name: t('sidebar.ai'), href: '/ai', icon: 'ai', permission: 'view_ai' },
       { name: t('sidebar.settings'), href: '/settings', icon: 'settings', permission: 'view_users' }
     ];
 

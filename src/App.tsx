@@ -14,7 +14,6 @@ import ProjectsPage from './pages/ProjectsPage';
 import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
 import SystemInfoPage from './pages/SystemInfoPage';
-import AIPage from './pages/AIPage';
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
 import InstallationWizard from './components/InstallationWizard';
@@ -115,7 +114,6 @@ function AppRoutes() {
         <Route path="/users" element={<UsersPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/system" element={<SystemInfoPage />} />
-        <Route path="/ai" element={<AIPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

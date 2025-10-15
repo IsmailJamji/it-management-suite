@@ -72,7 +72,7 @@ interface ITAsset {
 }
 
 const ITAssetsPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { hasPermission } = useAuth();
   const [assets, setAssets] = useState<ITAsset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -162,7 +162,7 @@ const ITAssetsPage: React.FC = () => {
 
   const handleExport = async (format: 'csv' | 'json' | 'xlsx', theme: string = 'modern') => {
     try {
-      const result = await window.electronAPI.itAssets.export(format, theme);
+      const result = await window.electronAPI.itAssets.export(format, theme, language);
       if (result.success) {
         setShowExportModal(false);
       }

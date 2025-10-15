@@ -21,7 +21,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     update: (id: number, assetData: any) => ipcRenderer.invoke('it-assets-update', id, assetData),
     delete: (id: number) => ipcRenderer.invoke('it-assets-delete', id),
     import: (data: any, format: string) => ipcRenderer.invoke('it-assets-import', data, format),
-    export: (format: string, theme: string) => ipcRenderer.invoke('it-assets-export', format, theme)
+    export: (format: string, theme: string, language?: string) => ipcRenderer.invoke('it-assets-export', format, theme, language)
   },
 
   // Telecom Assets API
@@ -32,7 +32,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     update: (id: number, assetData: any) => ipcRenderer.invoke('telecom-assets-update', id, assetData),
     delete: (id: number) => ipcRenderer.invoke('telecom-assets-delete', id),
     import: (data: any, format: string) => ipcRenderer.invoke('telecom-assets-import', data, format),
-    export: (format: string, theme: string) => ipcRenderer.invoke('telecom-assets-export', format, theme)
+    export: (format: string, theme: string, language?: string) => ipcRenderer.invoke('telecom-assets-export', format, theme, language)
   },
 
   // Devices API
@@ -59,7 +59,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     create: (projectData: any) => ipcRenderer.invoke('projects-create', projectData),
     update: (id: number, projectData: any) => ipcRenderer.invoke('projects-update', id, projectData),
     delete: (id: number) => ipcRenderer.invoke('projects-delete', id),
-    export: (format: string, theme: string) => ipcRenderer.invoke('projects-export', format, theme)
+    export: (format: string, theme: string, language?: string) => ipcRenderer.invoke('projects-export', format, theme, language)
   },
 
   // Tasks API
@@ -69,7 +69,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     create: (taskData: any) => ipcRenderer.invoke('tasks-create', taskData),
     update: (id: number, taskData: any) => ipcRenderer.invoke('tasks-update', id, taskData),
     delete: (id: number) => ipcRenderer.invoke('tasks-delete', id),
-    export: (format: string, theme: string) => ipcRenderer.invoke('tasks-export', format, theme)
+    export: (format: string, theme: string, language?: string) => ipcRenderer.invoke('tasks-export', format, theme, language)
   },
 
   // Permissions API

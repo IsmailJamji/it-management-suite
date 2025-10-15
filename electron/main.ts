@@ -425,9 +425,9 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
   }
 });
 
-  ipcMain.handle('projects-export', async (event, format, theme) => {
+  ipcMain.handle('projects-export', async (event, format, theme, language = 'fr') => {
     try {
-      const buffer = await excelExportService.exportProjects(format, theme);
+      const buffer = await excelExportService.exportProjects(format, theme, language);
       
       // Show save dialog
       const result = await dialog.showSaveDialog(mainWindow, {
@@ -486,9 +486,9 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
     return await database.deleteTask(id);
   });
 
-  ipcMain.handle('tasks-export', async (event, format, theme) => {
+  ipcMain.handle('tasks-export', async (event, format, theme, language = 'fr') => {
     try {
-      const buffer = await excelExportService.exportTasks(format, theme);
+      const buffer = await excelExportService.exportTasks(format, theme, language);
       
       // Show save dialog
       const result = await dialog.showSaveDialog(mainWindow, {
@@ -602,9 +602,9 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
     return await database.deleteITAsset(id);
   });
 
-  ipcMain.handle('it-assets-export', async (event, format, theme) => {
+  ipcMain.handle('it-assets-export', async (event, format, theme, language = 'fr') => {
     try {
-      console.log('IT Assets export requested - format:', format, 'theme:', theme);
+      console.log('IT Assets export requested - format:', format, 'theme:', theme, 'language:', language);
       console.log('ExcelExportService instance:', excelExportService);
       
       if (!excelExportService) {
@@ -612,7 +612,7 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
       }
       
       console.log('Calling excelExportService.exportITAssets...');
-      const buffer = await excelExportService.exportITAssets(format, theme);
+      const buffer = await excelExportService.exportITAssets(format, theme, language);
       console.log('IT Assets export buffer created, size:', buffer.length);
       console.log('Buffer type:', typeof buffer);
       console.log('Buffer is Array:', Array.isArray(buffer));
@@ -687,16 +687,16 @@ ipcMain.handle('excel-import-execute', async (event, fileData, assetType) => {
     return await database.deleteTelecomAsset(id);
   });
 
-  ipcMain.handle('telecom-assets-export', async (event, format, theme) => {
+  ipcMain.handle('telecom-assets-export', async (event, format, theme, language = 'fr') => {
     try {
-      console.log('Telecom Assets export requested - format:', format, 'theme:', theme);
+      console.log('Telecom Assets export requested - format:', format, 'theme:', theme, 'language:', language);
       console.log('ExcelExportService instance:', excelExportService);
       
       if (!excelExportService) {
         throw new Error('ExcelExportService not initialized');
       }
       
-      const buffer = await excelExportService.exportTelecomAssets(format, theme);
+      const buffer = await excelExportService.exportTelecomAssets(format, theme, language);
       console.log('Telecom Assets export buffer created, size:', buffer.length);
       
       // Show save dialog

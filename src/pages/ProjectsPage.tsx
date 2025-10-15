@@ -18,7 +18,7 @@ interface Project {
 
 const ProjectsPage: React.FC = () => {
   const { user, isAdmin, hasPermission } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -96,7 +96,7 @@ const ProjectsPage: React.FC = () => {
   const handleExport = async (format: string = 'xlsx', theme: string = 'modern') => {
     try {
       if (window.electronAPI) {
-        const result = await window.electronAPI.projects.export(format, theme);
+        const result = await window.electronAPI.projects.export(format, theme, language);
         
         if (result.success) {
           alert(`✅ Export successful!\nFile saved to: ${result.filePath}`);

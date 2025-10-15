@@ -23,7 +23,7 @@ interface Task {
 
 const TasksPage: React.FC = () => {
   const { user, isAdmin, hasPermission } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -150,7 +150,7 @@ const TasksPage: React.FC = () => {
 
   const handleExportTasks = async () => {
     try {
-      await window.electronAPI.tasks.export('excel', 'light');
+      await window.electronAPI.tasks.export('excel', 'light', language);
       alert('✅ Tasks exported successfully!');
     } catch (error) {
       console.error('Failed to export tasks:', error);

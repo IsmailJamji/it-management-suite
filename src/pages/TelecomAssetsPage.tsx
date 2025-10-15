@@ -48,7 +48,7 @@ interface TelecomAsset {
 }
 
 const TelecomAssetsPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { hasPermission } = useAuth();
   const [assets, setAssets] = useState<TelecomAsset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -250,7 +250,7 @@ const TelecomAssetsPage: React.FC = () => {
     try {
       if (window.electronAPI) {
         console.log('Starting export with format:', format, 'theme:', theme);
-        const result = await window.electronAPI.telecomAssets.export(format, theme);
+        const result = await window.electronAPI.telecomAssets.export(format, theme, language);
         console.log('Export result:', result);
         
         if (result && result.success) {

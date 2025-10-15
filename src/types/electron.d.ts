@@ -15,7 +15,7 @@ declare global {
         update: (id: number, assetData: any) => Promise<void>;
         delete: (id: number) => Promise<void>;
         import: (data: any, format: string) => Promise<any>;
-        export: (format: string, theme: string) => Promise<any>;
+        export: (format: string, theme: string, language?: string) => Promise<any>;
       };
       telecomAssets: {
         getAll: () => Promise<any[]>;
@@ -24,7 +24,7 @@ declare global {
         update: (id: number, assetData: any) => Promise<void>;
         delete: (id: number) => Promise<void>;
         import: (data: any, format: string) => Promise<any>;
-        export: (format: string, theme: string) => Promise<any>;
+        export: (format: string, theme: string, language?: string) => Promise<any>;
       };
       devices: {
         getAll: () => Promise<any[]>;
@@ -45,7 +45,7 @@ declare global {
         create: (projectData: any) => Promise<number>;
         update: (id: number, projectData: any) => Promise<void>;
         delete: (id: number) => Promise<void>;
-        export: (format: string, theme: string) => Promise<any>;
+        export: (format: string, theme: string, language?: string) => Promise<any>;
       };
       tasks: {
         getAll: () => Promise<any[]>;
@@ -53,7 +53,7 @@ declare global {
         create: (taskData: any) => Promise<number>;
         update: (id: number, taskData: any) => Promise<void>;
         delete: (id: number) => Promise<void>;
-        export: (format: string, theme: string) => Promise<any>;
+        export: (format: string, theme: string, language?: string) => Promise<any>;
       };
       permissions: {
         getByUser: (userId: number) => Promise<string[]>;
