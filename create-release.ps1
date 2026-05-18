@@ -4,8 +4,14 @@
 Write-Host "🚀 Creating GitHub Release for IT Management Suite v1.0.1" -ForegroundColor Green
 
 # Check if release files exist
-$setupFile = "release\IT Management Suite Setup 1.0.1.exe"
-$portableFile = "release\IT-Management-Suite-Portable.exe"
+$setupFile = "release\IT Suite Setup 1.0.1.exe"
+$portableFile = "release\IT-Suite-Portable.exe"
+if (-not (Test-Path $setupFile)) {
+    $setupFile = "release\IT Management Suite Setup 1.0.1.exe"
+}
+if (-not (Test-Path $portableFile)) {
+    $portableFile = "release\IT-Management-Suite-Portable.exe"
+}
 
 if (-not (Test-Path $setupFile)) {
     Write-Host "❌ Setup file not found: $setupFile" -ForegroundColor Red

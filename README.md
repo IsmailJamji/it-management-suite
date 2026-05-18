@@ -62,7 +62,9 @@ IT Management Suite is a modern, feature-rich desktop application built with **E
 - **Network**: For multi-user features
 
 ### Quick Start
-1. **Download** the installer from releases
+1. **Download** the latest Windows build from **[Releases](https://github.com/IsmailJamji/it-management-suite/releases/latest)**  
+   - `IT.Suite.Setup.1.0.1.exe` — installateur  
+   - `IT-Suite-Portable.exe` — version portable
 2. **Run** as Administrator
 3. **Choose** your mode:
    - **Local**: Single PC use
